@@ -308,19 +308,54 @@ musicToggle.addEventListener('click', async ()=>{
 });
 audio.addEventListener('play',()=>musicToggle.textContent='♫ Music: on');
 audio.addEventListener('pause',()=>musicToggle.textContent='♫ Music: off');
-document.getElementById('rsvpForm').addEventListener('submit',e=>{
- e.preventDefault();
- const name=document.getElementById('guestName').value.trim();
- const attendance=document.getElementById('attendance').value;
- const seats=document.getElementById('seats').value;
- const message=document.getElementById('message').value.trim();
- const body=`Wedding RSVP for Niño & Steph%0D%0A%0D%0AName: ${encodeURIComponent(name)}%0D%0AResponse: ${encodeURIComponent(attendance)}%0D%0ASeats requested/reserved: ${encodeURIComponent(seats)}%0D%0AMessage: ${encodeURIComponent(message)}%0D%0A`;
- const result=document.getElementById('rsvp-result');
- result.style.display='block';
- result.innerHTML='<strong>Your RSVP is ready.</strong><br>An email draft will open if an email app is configured. Before publishing, replace <code>YOUR-EMAIL@example.com</code> in the HTML with your RSVP email address.';
- const mailto=`mailto:robles.steph.kaye@gmail.com?subject=${encodeURIComponent('Wedding RSVP — Niño & Steph')}&body=${body}`;
- window.location.href=mailto;
+
+const RSVP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8q-AKDZmCB1QaVGVjlhEN7he-U3A-G-HoThxudw9y7UpijLc0-ItC9rcR3KOoak7I/exec";
+
+document.getElementById('rsvpForm').addEventListener('submit', async e => {
+  e.preventDefault();
+
+  const name = document.getElementById('guestName').value.trim();
+  const attendance = document.getElementById('attendance').value;
+  const seats = document.getElementById('seats').value;
+  const message = document.getElementById('message').value.trim();
+  const result = document.getElementById('rsvp-result');
+  const button = e.currentTarget.querySelector('button[type="submit"]');
+
+  const data = new URLSearchParams({
+    guestName: name,
+    attendance: attendance,
+    seats: seats,
+    message: message
+  });
+
+  result.style.display = 'block';
+  result.textContent = 'Submitting your RSVP...';
+
+  if (button) {
+    button.disabled = true;
+  }
+
+  try {
+    await fetch(RSVP_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: data
+    });
+
+    result.textContent =
+      "Thank you for your RSVP! Your response has been received, and we're so happy you'll be part of our special day. We can't wait to celebrate with you! With love, Niño & Steph.";
+
+    e.currentTarget.reset();
+  } catch (error) {
+    result.textContent =
+      "We couldn't submit your RSVP. Please try again or contact the couple.";
+  } finally {
+    if (button) {
+      button.disabled = false;
+    }
+  }
 });
+
 </script>
 </body>
 </html>
