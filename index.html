@@ -309,31 +309,28 @@ musicToggle.addEventListener('click', async ()=>{
 audio.addEventListener('play',()=>musicToggle.textContent='♫ Music: on');
 audio.addEventListener('pause',()=>musicToggle.textContent='♫ Music: off');
 
+
 const RSVP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8q-AKDZmCB1QaVGVjlhEN7he-U3A-G-HoThxudw9y7UpijLc0-ItC9rcR3KOoak7I/exec";
 
-document.getElementById('rsvpForm').addEventListener('submit', async e => {
+document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
   e.preventDefault();
 
-  const name = document.getElementById('guestName').value.trim();
-  const attendance = document.getElementById('attendance').value;
-  const seats = document.getElementById('seats').value;
-  const message = document.getElementById('message').value.trim();
+  const form = this;
   const result = document.getElementById('rsvp-result');
-  const button = e.currentTarget.querySelector('button[type="submit"]');
+  const button = form.querySelector('button[type="submit"]');
 
   const data = new URLSearchParams({
-    guestName: name,
-    attendance: attendance,
-    seats: seats,
-    message: message
+    guestName: document.getElementById('guestName').value.trim(),
+    attendance: document.getElementById('attendance').value,
+    seats: document.getElementById('seats').value,
+    message: document.getElementById('message').value.trim()
   });
 
+  if (button) button.disabled = true;
   result.style.display = 'block';
   result.textContent = 'Submitting your RSVP...';
 
-  if (button) {
-    button.disabled = true;
-  }
+  let requestSent = false;
 
   try {
     await fetch(RSVP_SCRIPT_URL, {
@@ -341,19 +338,22 @@ document.getElementById('rsvpForm').addEventListener('submit', async e => {
       mode: 'no-cors',
       body: data
     });
+    requestSent = true;
+  } catch (error) {
+    console.error('RSVP network error:', error);
+  }
 
+  if (requestSent) {
     result.textContent =
       "Thank you for your RSVP! Your response has been received, and we're so happy you'll be part of our special day. We can't wait to celebrate with you! With love, Niño & Steph.";
 
-    e.currentTarget.reset();
-  } catch (error) {
+    form.reset();
+  } else {
     result.textContent =
-      "We couldn't submit your RSVP. Please try again or contact the couple.";
-  } finally {
-    if (button) {
-      button.disabled = false;
-    }
+      "We couldn't confirm the submission. Please check with Niño & Steph before submitting again.";
   }
+
+  if (button) button.disabled = false;
 });
 
 </script>
