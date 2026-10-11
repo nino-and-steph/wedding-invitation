@@ -255,7 +255,7 @@ footer p{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase}
     <form id="rsvpForm">
      <div class="field"><label for="guestName">Full name</label><input id="guestName" name="guestName" required placeholder="Name on your invitation"></div>
      <div class="field"><label for="attendance">Will you be joining us?</label><select id="attendance" name="attendance" required><option value="">Please choose</option><option value="Joyfully accepts">Joyfully accepts</option><option value="Regretfully declines">Regretfully declines</option></select></div>
-     <div class="field"><label for="seats">Number of seats reserved for you</label><select id="seats" name="seats" required><option value="">Choose seat count</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select><span class="note">Please select only the number of seats allocated to your invitation. You can edit this list in the HTML if needed.</span></div>
+     <div class="field"><label for="seats">Number of seats reserved for you</label><select id="seats" name="seats" required><option value="">Choose seat count</option><option>1</option><option>2</option></select><span class="note">Please select only the number of seats allocated to your invitation. You can edit this list in the HTML if needed.</span></div>
      <div class="field"><label for="message">Message to the couple (optional)</label><textarea id="message" name="message" rows="3" placeholder="A little note for Niño & Steph"></textarea></div>
      <button class="primary" type="submit">Prepare my RSVP ✧</button>
      <div id="rsvp-result" role="status"></div>
@@ -318,7 +318,7 @@ document.getElementById('rsvpForm').addEventListener('submit',e=>{
  const result=document.getElementById('rsvp-result');
  result.style.display='block';
  result.innerHTML='<strong>Your RSVP is ready.</strong><br>An email draft will open if an email app is configured. Before publishing, replace <code>YOUR-EMAIL@example.com</code> in the HTML with your RSVP email address.';
- const mailto=`mailto:YOUR-EMAIL@example.com?subject=${encodeURIComponent('Wedding RSVP — Niño & Steph')}&body=${body}`;
+ const mailto=`mailto:robles.steph.kaye@gmail.com?subject=${encodeURIComponent('Wedding RSVP — Niño & Steph')}&body=${body}`;
  window.location.href=mailto;
 });
 </script>
